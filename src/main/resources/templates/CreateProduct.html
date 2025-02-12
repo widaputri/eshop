@@ -10,18 +10,46 @@
 <div class="container">
     <h3>Create New Product</h3>
 
-    <form th:action="@{/product/create}" th:object="${product}" method="post">
+    <form th:action="@{/product/create}" th:object="${product}" method="post" onsubmit="return validateForm()">
         <div class="form-group">
             <label for="nameInput">Name</label>
-            <input th:field="*{productName}" type="text" class="form-control mb-4 col-4" id="nameInput" placeholder="Enter product' name">
+            <input th:field="*{productName}" type="text" class="form-control mb-4 col-4" id="nameInput" placeholder="Enter product name">
+            <small class="text-danger" id="nameError"></small>
         </div>
         <div class="form-group">
             <label for="quantityInput">Quantity</label>
-            <input th:field="*{productQuantity}" type="text" class="form-control mb-4 col-4" id="quantityInput" placeholder="Enter product' name">
+            <input th:field="*{productQuantity}" type="text" class="form-control mb-4 col-4" id="quantityInput" placeholder="Enter product quantity">
+            <small class="text-danger" id="quantityError"></small>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+<script>
+    function validateForm() {
+        let isValid = true;
+        const nameInput = document.getElementById("nameInput");
+        const quantityInput = document.getElementById("quantityInput");
+        const nameError = document.getElementById("nameError");
+        const quantityError = document.getElementById("quantityError");
+
+        nameError.textContent = "";
+        quantityError.textContent = "";
+
+        if (nameInput.value.trim().length <= 0) {
+            nameError.textContent = "Name is required";
+            isValid = false;
+        }
+
+        const quantityValue = parseInt(quantityInput.value.trim());
+        if (isNaN(quantityValue) || quantityValue <= 0) {
+            quantityError.textContent = "Quantity must be positive.";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
