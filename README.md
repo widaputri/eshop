@@ -11,3 +11,22 @@ Untuk exercise kali ini, saya tidak menggunakan comment sama sekali karena fungs
 Prinsip ini tidak terlalu menonjol di kode saya, mungkin hanya terlihat di ProductService dimana kita 'menyembunyikan' implementasi dari interface ProductService.
 ## Error handling
 Aspek ini masih dapat ditingkatkan di pekerjaan saya. Untuk sekarang, masih banyak penggunaan return null di kode saya. Saya juga belum menerapkan input validation yang lengkap di kode saya. Hal ini tentunya perlu ditingkatkan ke depannya.
+
+# Reflection 2
+## Nomor 1
+### After writing the unit test, how do you feel?
+Saat membuat, saya sedikit terkendala saat memikirkan cases-cases yang harus dicover. Tetapi, setelah melihat test-test yang saya buat sukses, saya merasa senang.
+### How many unit tests should be made in a class?
+Tidak ada aturan konkrit untuk banyak unit test yang harus dibuat, tetapi tiap kelas setidaknya harus memiliki unit test yang meng-cover kasus-kasus:
+- Semua kemungkinan conditional
+- Edge case
+- Exception yang sudah disangka akan muncul (seperti input yang invalid)
+- Berbagai macam kasus positif dan negatif
+### How to make sure that our unit tests are enough to verify our program?
+Ada yang dinamakan *code coverage*. Metric ini menunjukkan seberapa banyak kode kita yang dijalankan saat di-test. Ada *Line Coverage* yang memastikan tiap line tereksekusi dan *branch coverage* yang memeriksa tiap *branch* di *control statements*(if-else, switch, dll.). Best practice di industri diantaranya yaitu menargetkan setidaknya 80% code coverage, fokuskan tests pada bagian paling penting dari aplikasi (misal: business logic), dan hindari membuat test untuk bagian-bagian yang sederhana (misal: setter/getters)
+### If you have 100% code coverage, does that mean your code has no bugs or errors? 
+Belum tentu, karena mungkin saja tes yang kita buat tidak meng-cover edge cases. Bisa juga test yang kita buat tidak berkualitas atau memiliki logical error, sehingga masih ada kemungkinan bug atau error di aplikasi kita.
+## Nomor 2
+Suppose that after writing the CreateProductFunctionalTest.java along with the corresponding test case, you were asked to create another functional test suite that verifies the number of items in the product list. You decided to create a new Java class similar to the prior functional test suites with the same setup procedures and instance variables.
+### What do you think about the cleanliness of the code of the new functional test suite? Will the new code reduce the code quality? Identify the potential clean code issues, explain the reasons, and suggest possible improvements to make the code cleaner!
+Cleanliness dari kode tersebut berkurang karena adanya penduplikasian kode. Ketika kita meng-copy-paste langkah-langkah dan variabel ke banyak test class, kita melanggar prinsip "*Don't Repeat Yourself*". Selain juga meningkatkan kompleksitas pemeliharaan aplikasi kita, hal tersebut membuat kode kita kurang *readable*. Implementasi ini juga akan menimbulkan ketidakkonsistenan ketika kita mengubah base functionality bagian tersebut. Peningkatan dapat dilakukan dengan membuat class abstrak base untuk test dimana kita mengumpulkan logic untuk setup dan variabel-variabel yang diperlukan. Class ini nantinya dapat diextend oleh tests lain dan kita bisa langsung mendefinisikan method tes-tes yang spesifik kepada kelas test konkret tersebut.
