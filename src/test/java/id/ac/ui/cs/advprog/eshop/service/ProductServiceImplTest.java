@@ -8,6 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -21,6 +25,59 @@ public class ProductServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void findById_ProductExists() {
+        Product product = new Product();
+        product.setProductId("1");
+        product.setProductName("Test Product");
+
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+
+        when(productRepository.findAll()).thenReturn(products.iterator());
+
+        Product foundProduct = productService.findById("1");
+
+        assertNotNull(foundProduct);
+        assertEquals("1", foundProduct.getProductId());
+        assertEquals("Test Product", foundProduct.getProductName());
+    }
+
+    @Test
+    void findById_ProductDoesNotExist() {
+        List<Product> products = new ArrayList<>();
+
+        when(productRepository.findAll()).thenReturn(products.iterator());
+
+        Product foundProduct = productService.findById("999");
+
+        assertNull(foundProduct);
+    }
+
+    @Test
+    void findAll_ReturnsList() {
+        Product product1 = new Product();
+        product1.setProductId("1");
+        product1.setProductName("Product 1");
+
+        Product product2 = new Product();
+        product2.setProductId("2");
+        product2.setProductName("Product 2");
+
+        List<Product> products = new ArrayList<>();
+        products.add(product1);
+        products.add(product2);
+
+        when(productRepository.findAll()).thenReturn(products.iterator());
+
+        List<Product> foundProducts = productService.findAll();
+
+        assertNotNull(foundProducts);
+        assertEquals(2, foundProducts.size());
+        assertEquals("Product 1", foundProducts.get(0).getProductName());
+        assertEquals("Product 2", foundProducts.get(1).getProductName());
     }
 
     @Test
