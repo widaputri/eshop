@@ -57,3 +57,16 @@ Jika proyek berkembang, misalnya ingin menambahkan MotorcycleController, tanpa S
 
 Testing juga menjadi sulit. Jika ada bug di CarRepository, bisa menyebabkan kegagalan di CarServiceImpl, meskipun kesalahan bukan di sana. Dengan SRP, masalah dapat diisolasi dengan lebih baik.
 
+### OCP
+Peningkatan:
+Membuat CRUD Repository untuk meningkatkan maintainability ketika akan menambah tipe produk baru (misal, motor)
+
+Advantage:
+- Lebih mudah menambahkan produk baru (misalnya Motorcycle) cukup dengan membuat kelas baru tanpa mengubah yang lama.
+- Kode lebih bersih karena tidak ada duplikasi.
+- Lebih mudah dites karena tiap entitas terpisah dengan baik.
+
+Disadvantage jika tidak menerapkan:
+- Setiap perubahan bisa merusak fitur lain.
+- Kode sulit diperluas karena harus dimodifikasi setiap kali ada entitas baru.
+- Lebih banyak duplikasi kode, yang membuat maintenance lebih sulit.
