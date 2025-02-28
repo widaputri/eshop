@@ -24,8 +24,15 @@ public class CarRepository {
         return carData.stream().filter(car -> car.getCarId().equals(id)).findFirst().orElse(null);
     }
 
-    public void update(String id, Car updatedCar) {
-        carData.replaceAll(car -> car.getCarId().equals(id) ? updatedCar : car);
+    public Car update(String id, Car updatedCar) {
+        for (int i = 0; i < carData.size(); i++) {
+            if (carData.get(i).getCarId().equals(id)) {
+                updatedCar.setCarId(id); // Pastikan ID tetap sama
+                carData.set(i, updatedCar);
+                return updatedCar;
+            }
+        }
+        return null; // Jika ID tidak ditemukan
     }
 
     public void delete(String id) {
