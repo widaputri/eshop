@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -16,22 +17,20 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car create(Car car) {
-        carRepository.create(car);
-        return car;
+        car.setCarId(UUID.randomUUID().toString());
+        return carRepository.create(car);
     }
 
     @Override
     public List<Car> findAll() {
-        Iterator<Car> carIterator = carRepository.findAll();
-        List<Car> allCar = new ArrayList<>();
-        carIterator.forEachRemaining(allCar::add);
-        return allCar;
+        List<Car> allCars = new ArrayList<>();
+        carRepository.findAll().forEachRemaining(allCars::add);
+        return allCars;
     }
 
     @Override
     public Car findById(String carId) {
-        Car car = carRepository.findById(carId);
-        return car;
+        return carRepository.findById(carId);
     }
 
     @Override

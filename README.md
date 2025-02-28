@@ -30,3 +30,43 @@ Belum tentu, karena mungkin saja tes yang kita buat tidak meng-cover edge cases.
 Suppose that after writing the CreateProductFunctionalTest.java along with the corresponding test case, you were asked to create another functional test suite that verifies the number of items in the product list. You decided to create a new Java class similar to the prior functional test suites with the same setup procedures and instance variables.
 ### What do you think about the cleanliness of the code of the new functional test suite? Will the new code reduce the code quality? Identify the potential clean code issues, explain the reasons, and suggest possible improvements to make the code cleaner!
 Cleanliness dari kode tersebut berkurang karena adanya penduplikasian kode. Ketika kita meng-copy-paste langkah-langkah dan variabel ke banyak test class, kita melanggar prinsip "*Don't Repeat Yourself*". Selain juga meningkatkan kompleksitas pemeliharaan aplikasi kita, hal tersebut membuat kode kita kurang *readable*. Implementasi ini juga akan menimbulkan ketidakkonsistenan ketika kita mengubah base functionality bagian tersebut. Peningkatan dapat dilakukan dengan membuat class abstrak base untuk test dimana kita mengumpulkan logic untuk setup dan variabel-variabel yang diperlukan. Class ini nantinya dapat diextend oleh tests lain dan kita bisa langsung mendefinisikan method tes-tes yang spesifik kepada kelas test konkret tersebut.
+
+
+# Reflection 3
+
+### SRP
+#### Peningkatan:
+- Controller hanya meng-handle request HTTP, tidak handle business logic
+- Services yang handle business logic
+- Repository hanya handle penyimpanan data
+- Memisahkan ProductController dan CarController
+
+#### Advantage
+Dengan SRP, setiap kelas hanya memiliki satu alasan untuk berubah, sehingga kode lebih mudah dirawat, diextend, dan dites. 
+
+Sebelumnya, CarController inherit dari ProductController, yang membuat kedua kelas saling terkait. Setelah dipisah, ProductController hanya menangani produk, dan CarController hanya menangani mobil. Sekarang, jika ada perubahan dalam fitur produk, tidak akan mempengaruhi mobil.
+
+Selain itu, CarServiceImpl awalnya mencampur business logic dan operasi database. Dengan SRP, CarServiceImpl hanya menangani logika bisnis, sementara CarRepository menghandle penyimpanan data. Ini membuat kode lebih bersih dan mudah dipahami.
+
+Ketika melakukan testing, sebelumnya ProductController sulit diuji karena juga menangani CarController. Setelah SRP diterapkan, setiap bagian bisa diuji secara independen, sehingga lebih efisien.
+
+#### Disadvantage
+Tanpa SRP, kode menjadi sulit dipelihara dan dikembangkan. Jika ProductController berubah, CarController juga bisa terpengaruh, meskipun seharusnya tidak ada hubungannya.
+
+Jika proyek berkembang, misalnya ingin menambahkan MotorcycleController, tanpa SRP kita mungkin tergoda untuk memasukkannya ke dalam CarController, yang akan memperumit kode.
+
+Testing juga menjadi sulit. Jika ada bug di CarRepository, bisa menyebabkan kegagalan di CarServiceImpl, meskipun kesalahan bukan di sana. Dengan SRP, masalah dapat diisolasi dengan lebih baik.
+
+### OCP
+Peningkatan:
+Membuat CRUD Repository untuk meningkatkan maintainability ketika akan menambah tipe produk baru (misal, motor)
+
+Advantage:
+- Lebih mudah menambahkan produk baru (misalnya Motorcycle) cukup dengan membuat kelas baru tanpa mengubah yang lama.
+- Kode lebih bersih karena tidak ada duplikasi.
+- Lebih mudah dites karena tiap entitas terpisah dengan baik.
+
+Disadvantage jika tidak menerapkan:
+- Setiap perubahan bisa merusak fitur lain.
+- Kode sulit diperluas karena harus dimodifikasi setiap kali ada entitas baru.
+- Lebih banyak duplikasi kode, yang membuat maintenance lebih sulit.
