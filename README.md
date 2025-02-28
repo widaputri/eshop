@@ -70,3 +70,17 @@ Disadvantage jika tidak menerapkan:
 - Setiap perubahan bisa merusak fitur lain.
 - Kode sulit diperluas karena harus dimodifikasi setiap kali ada entitas baru.
 - Lebih banyak duplikasi kode, yang membuat maintenance lebih sulit.
+
+### LSP
+#### Peningkatan:
+Memisahkan ProductController dan CarController
+
+#### Advantage:
+- Jika ingin menambahkan jenis produk baru, cukup buat class baru tanpa mengubah kode lama. Misalnya, CarController berdiri sendiri tanpa memodifikasi ProductController.
+- Karena kode lama tidak perlu diubah, risiko kesalahan pada fitur yang sudah berfungsi berkurang.
+- Setiap entitas (seperti Car dan Product) memiliki pengelolaan sendiri, sehingga lebih mudah dikembangkan dan diuji.
+
+#### Disadvantage jika tidak menerpakan
+- Jika semua produk dikelola dalam satu class, setiap perubahan memengaruhi seluruh sistem, seperti jika Car dimasukkan dalam ProductController, maka setiap produk baru akan memerlukan modifikasi langsung.
+- Mengubah kode lama untuk menambahkan fitur baru bisa merusak fitur yang sudah ada.
+- Jika logika berbagai produk bercampur, sulit untuk memisahkan tanggung jawab dan memahami kode yang ada.
