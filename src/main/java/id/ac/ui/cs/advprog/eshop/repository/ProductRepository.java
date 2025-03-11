@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Iterator;
 
 @Repository
-public class ProductRepository {
+public class ProductRepository implements CRUDRepository<Product>{
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
@@ -32,6 +32,17 @@ public class ProductRepository {
         productData.remove(product);
     }
 
+    @Override
+    public void delete(String id){
+        Iterator<Product> iterator = productData.iterator();
+        while (iterator.hasNext()){
+            Product product = iterator.next();
+            if (product.getProductId().equals(id)){
+                iterator.remove();
+            }
+        }
+    }
+
     public Product update(Product newProduct) {
         for (Product product : productData) {
             if (product.getProductId().equals(newProduct.getProductId())) {
@@ -42,4 +53,16 @@ public class ProductRepository {
         }
         return null;
     }
+
+    @Override
+    public Product update(String id, Product newProduct){
+        for (Product product : productData) {
+            if (product.getProductId().equals(id)) {
+                product.setProductName(newProduct.getProductName());
+                product.setProductQuantity(newProduct.getProductQuantity());
+                return product;
+            }
+        }
+        return null;
+        }
 }
