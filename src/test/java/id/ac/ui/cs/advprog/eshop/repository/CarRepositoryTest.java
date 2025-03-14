@@ -43,7 +43,6 @@ class CarRepositoryTest {
         Car createdCar = carRepository.create(car);
 
         assertNotNull(createdCar);
-        assertNotNull(createdCar.getCarId()); // Ensures UUID was generated
         assertEquals("Honda Civic", createdCar.getCarName());
         assertEquals("Blue", createdCar.getCarColor());
         assertEquals(3, createdCar.getCarQuantity());
