@@ -7,35 +7,44 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class OrderRepository implements CRUDRepository<Order>{
+public class OrderRepository{
     private List<Order> orderData = new ArrayList<>();
 
-    @Override
-    public Order create(Order entity) {
-        return null;
+    public Order save(Order entity) {
+        int i = 0;
+        for (Order order : orderData) {
+            if (order.getId().equals(entity.getId())) {
+                orderData.remove(i);
+                orderData.add(i, entity);
+                return entity;
+            }
+            i += 1;
+        }
+
+        orderData.add(entity);
+        return entity;
     }
 
-    @Override
     public Iterator<Order> findAll() {
         return null;
     }
 
-    @Override
     public Order findById(String id) {
+        for (Order savedOrder : orderData) {
+            if (savedOrder.getId().equals(id)) {
+                return savedOrder;
+            }
+        }
         return null;
     }
 
     public List<Order> findAllByAuthor(String author) {
-        return null;
-    }
-
-    @Override
-    public Order update(String id, Order entity) {
-        return null;
-    }
-
-    @Override
-    public void delete(String id) {
-
+        List<Order> result = new ArrayList<>();
+        for (Order order : orderData) {
+            if (order.getAuthor().equals(author)) {
+                result.add(order);
+            }
+        }
+        return result;
     }
 }

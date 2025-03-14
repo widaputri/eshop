@@ -41,7 +41,7 @@ class OrderRepositoryTest {
     @Test
     void testSaveCreate() {
         Order order = orders.get(1);
-        Order result = orderRepository.create(order);
+        Order result = orderRepository.save(order);
 
         Order findResult = orderRepository.findById(orders.get(1).getId());
         assertEquals(order.getId(), result.getId());
@@ -54,9 +54,9 @@ class OrderRepositoryTest {
     @Test
     void testSaveUpdate() {
         Order order = orders.get(1);
-        orderRepository.create(order);
+        orderRepository.save(order);
         Order newOrder = new Order(order.getId(), order.getProducts(), order.getOrderTime(), order.getAuthor(), OrderStatus.SUCCESS.getValue());
-        Order result = orderRepository.create(newOrder);
+        Order result = orderRepository.save(newOrder);
 
         Order findResult = orderRepository.findById(orders.get(1).getId());
         assertEquals(order.getId(), result.getId());
@@ -69,7 +69,7 @@ class OrderRepositoryTest {
     @Test
     void testFindByIdIfFound() {
         for (Order order : orders) {
-            orderRepository.create(order);
+            orderRepository.save(order);
         }
 
         Order findResult = orderRepository.findById(orders.get(1).getId());
@@ -82,7 +82,7 @@ class OrderRepositoryTest {
     @Test
     void testFindByIdIfNotFound() {
         for (Order order : orders) {
-            orderRepository.create(order);
+            orderRepository.save(order);
         }
 
         Order findResult = orderRepository.findById("zczc");
@@ -92,7 +92,7 @@ class OrderRepositoryTest {
     @Test
     void testFindAllByAuthorIfAuthorCorrect() {
         for (Order order : orders) {
-            orderRepository.create(order);
+            orderRepository.save(order);
         }
 
         List<Order> orderList = orderRepository.findAllByAuthor(
@@ -102,7 +102,7 @@ class OrderRepositoryTest {
 
     @Test
     void testFindAllByAuthorIfAllLowercase() {
-        orderRepository.create(orders.get(1));
+        orderRepository.save(orders.get(1));
 
         List<Order> orderList = orderRepository.findAllByAuthor(
                 orders.get(1).getAuthor().toLowerCase());
