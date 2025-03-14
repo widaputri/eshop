@@ -49,7 +49,7 @@ class ProductControllerTest {
         mockMvc.perform(post("/product/create")
                         .flashAttr("product", product))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("list"));
+                .andExpect(redirectedUrl("/product/list"));
         verify(productService, times(1)).create(any(Product.class));
     }
 
@@ -69,10 +69,12 @@ class ProductControllerTest {
         Product product = new Product();
         product.setProductId("1");
         when(productService.findById("1")).thenReturn(product);
+
         mockMvc.perform(post("/product/delete/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/list"));
-        verify(productService, times(1)).delete(product);
+
+        verify(productService, times(1)).delete("1");
     }
 
     @Test
@@ -101,6 +103,6 @@ class ProductControllerTest {
                         .flashAttr("product", product))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/list"));
-        verify(productService, times(1)).edit(any(Product.class));
+        verify(productService, times(1)).edit(eq("1"), any(Product.class));
     }
 }

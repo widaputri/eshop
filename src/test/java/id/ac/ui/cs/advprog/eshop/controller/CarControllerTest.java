@@ -49,17 +49,17 @@ class CarControllerTest {
 
     @Test
     void testCreateCarPage() throws Exception {
-        mockMvc.perform(get("/car/createCar"))
+        mockMvc.perform(get("/car/create"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("CreateCar"));
     }
 
     @Test
     void testCreateCarPost() throws Exception {
-        mockMvc.perform(post("/car/createCar")
+        mockMvc.perform(post("/car/create")
                         .flashAttr("car", car))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/car/listCar"));
+                .andExpect(redirectedUrl("/car/list"));
         verify(carService, times(1)).create(any(Car.class));
     }
 
@@ -68,7 +68,7 @@ class CarControllerTest {
         List<Car> carList = Arrays.asList(car);
         when(carService.findAll()).thenReturn(carList);
 
-        mockMvc.perform(get("/car/listCar"))
+        mockMvc.perform(get("/car/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("CarList"))
                 .andExpect(model().attributeExists("cars"));
@@ -79,7 +79,7 @@ class CarControllerTest {
     void testCarListPageWithNoCars() throws Exception {
         when(carService.findAll()).thenReturn(List.of());
 
-        mockMvc.perform(get("/car/listCar"))
+        mockMvc.perform(get("/car/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("CarList"))
                 .andExpect(model().attributeExists("cars"));
@@ -90,7 +90,7 @@ class CarControllerTest {
     void testEditCarPage() throws Exception {
         when(carService.findById("C001")).thenReturn(car);
 
-        mockMvc.perform(get("/car/editCar/C001"))
+        mockMvc.perform(get("/car/edit/C001"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("EditCar"))
                 .andExpect(model().attributeExists("car"));
@@ -100,7 +100,7 @@ class CarControllerTest {
     void testEditCarPageCarNotFound() throws Exception {
         when(carService.findById("C999")).thenReturn(null);
 
-        mockMvc.perform(get("/car/editCar/C999"))
+        mockMvc.perform(get("/car/edit/C999"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("EditCar"))
                 .andExpect(model().attribute("car", nullValue()));
@@ -110,20 +110,18 @@ class CarControllerTest {
 
     @Test
     void testEditCarPost() throws Exception {
-        mockMvc.perform(post("/car/editCar")
-                        .flashAttr("car", car))
+        mockMvc.perform(post("/car/edit/C001"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/car/listCar"));
+                .andExpect(redirectedUrl("/car/list"));
 
         verify(carService, times(1)).update(eq("C001"), any(Car.class));
     }
 
     @Test
     void testDeleteCar() throws Exception {
-        mockMvc.perform(post("/car/deleteCar")
-                        .param("carId", "C001"))
+        mockMvc.perform(post("/car/delete/C001"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/car/listCar"));
+                .andExpect(redirectedUrl("/car/list"));
 
         verify(carService, times(1)).deleteCarById("C001");
     }
