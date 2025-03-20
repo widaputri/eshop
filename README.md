@@ -84,3 +84,14 @@ Memisahkan ProductController dan CarController
 - Jika semua produk dikelola dalam satu class, setiap perubahan memengaruhi seluruh sistem, seperti jika Car dimasukkan dalam ProductController, maka setiap produk baru akan memerlukan modifikasi langsung.
 - Mengubah kode lama untuk menambahkan fitur baru bisa merusak fitur yang sudah ada.
 - Jika logika berbagai produk bercampur, sulit untuk memisahkan tanggung jawab dan memahami kode yang ada.
+
+# Reflection 4
+## Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+Setelah mengikuti alur Test-Driven Development (TDD) dalam latihan ini, saya merasa bahwa metode ini cukup membantu dalam meningkatkan kualitas kode dan memastikan bahwa setiap fitur yang dikembangkan memiliki cakupan pengujian yang baik. Alur TDD memaksa saya untuk berpikir lebih matang sebelum menulis implementasi kode, sehingga meminimalkan kemungkinan adanya bug atau kesalahan logika.
+
+## You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+- Fast (Cepat): Sebagian besar pengujian berjalan cukup cepat karena tidak memiliki dependensi eksternal yang berat. Namun, ada beberapa pengujian yang mungkin bisa dioptimalkan dengan mengurangi instansiasi objek yang tidak perlu di setiap pengujian.
+- Independent (Independen): Pengujian saya sebagian besar sudah independen karena menggunakan @BeforeEach untuk menginisialisasi data sebelum setiap pengujian dijalankan. Namun, ada beberapa kasus di mana satu pengujian bergantung pada data dari pengujian lain, sehingga perlu diperbaiki agar lebih terisolasi.
+- Repeatable (Dapat Diulang): Pengujian dapat dijalankan berulang kali dengan hasil yang konsisten, terutama karena saya menggunakan objek mock pada pengujian layanan (OrderServiceImplTest).
+- Self-Validating (Dapat Memvalidasi Diri Sendiri): Pengujian telah menggunakan assertEquals, assertThrows, dan metode lain untuk memastikan hasil yang diharapkan, sehingga dapat dikatakan sudah memenuhi prinsip ini.
+- Timely (Tepat Waktu): Pengujian dibuat bersamaan dengan atau sebelum implementasi kode, sehingga membantu dalam mengarahkan pengembangan. Saya sudah mengikuti prinsip ini dengan cukup baik, meskipun ada beberapa kasus di mana saya merasa lebih dulu menulis implementasi sebelum tes.
