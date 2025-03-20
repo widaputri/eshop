@@ -76,4 +76,95 @@ public class PaymentTest {
         payment.setStatus("REJECTED");
         assertEquals("REJECTED", payment.getStatus());
     }
+
+    @Test
+    void testCreatePaymentVoucherCodeTooShort() {
+        paymentData.put("voucherCode", "ESHOP123"); // Hanya 9 karakter
+        payment = new Payment("8", "Voucher", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentVoucherCodeTooLong() {
+        paymentData.put("voucherCode", "ESHOP1234ABC567890"); // 18 karakter
+        payment = new Payment("9", "Voucher", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentVoucherCodeWithoutESHOPPrefix() {
+        paymentData.put("voucherCode", "SHOP1234ABC5678"); // Tanpa "ESHOP"
+        payment = new Payment("10", "Voucher", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentVoucherCodeWithoutEightDigits() {
+        paymentData.put("voucherCode", "ESHOPABCDABCDABCD"); // Tidak ada 8 angka
+        payment = new Payment("11", "Voucher", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentVoucherCodeIsEmpty() {
+        paymentData.put("voucherCode", "");
+        payment = new Payment("12", "Voucher", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentVoucherCodeIsNull() {
+        paymentData.put("voucherCode", null);
+        payment = new Payment("13", "Voucher", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithEmptyBankName() {
+        paymentData.put("bankName", "");
+        paymentData.put("referenceCode", "12345678");
+        payment = new Payment("14", "Bank Transfer", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithEmptyReferenceCode() {
+        paymentData.put("bankName", "Bank A");
+        paymentData.put("referenceCode", "");
+        payment = new Payment("15", "Bank Transfer", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithoutBankNameKey() {
+        paymentData.put("referenceCode", "12345678");
+        payment = new Payment("16", "Bank Transfer", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithoutReferenceCodeKey() {
+        paymentData.put("bankName", "Bank A");
+        payment = new Payment("17", "Bank Transfer", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithBothBankFieldsEmpty() {
+        paymentData.put("bankName", "");
+        paymentData.put("referenceCode", "");
+        payment = new Payment("18", "Bank Transfer", "PENDING", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
 }
