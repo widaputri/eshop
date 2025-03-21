@@ -158,4 +158,20 @@ public class ProductRepositoryTest {
 
         assertNull(result, "findById() should return null when no matching product ID is found");
     }
+
+    @Test
+    void testDeleteById() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+        productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        assertNull(productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6"));
+    }
+
+    @Test
+    void testDeleteNonExistentProduct() {
+        assertDoesNotThrow(() -> productRepository.delete("non-existent-id"));
+    }
 }
