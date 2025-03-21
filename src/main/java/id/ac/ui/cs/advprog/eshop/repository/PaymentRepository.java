@@ -8,30 +8,31 @@ public class PaymentRepository implements CRUDRepository<Payment> {
 
     @Override
     public Payment create(Payment entity) {
-        // TODO: Implement create logic
-        return null;
+        paymentStorage.put(entity.getId(), entity);
+        return entity;
     }
 
     @Override
     public Iterator<Payment> findAll() {
-        // TODO: Implement findAll logic
-        return null;
+        return paymentStorage.values().iterator();
     }
 
     @Override
     public Payment findById(String id) {
-        // TODO: Implement findById logic
-        return null;
+        return paymentStorage.get(id);
     }
 
     @Override
     public Payment update(String id, Payment entity) {
-        // TODO: Implement update logic
+        if (paymentStorage.containsKey(id)) {
+            paymentStorage.put(id, entity);
+            return entity;
+        }
         return null;
     }
 
     @Override
     public void delete(String id) {
-        // TODO: Implement delete logic
+        paymentStorage.remove(id);
     }
 }
