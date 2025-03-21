@@ -55,10 +55,15 @@ class PaymentRepositoryTest {
         paymentRepository.create(samplePayment1);
         paymentRepository.create(samplePayment2);
         Iterator<Payment> paymentIterator = paymentRepository.findAll();
+        assertTrue(paymentIterator.hasNext());
+        int count = 0;
+        while (paymentIterator.hasNext()) {
+            paymentIterator.next();
+            count++;
+        }
 
         assertNotNull(paymentIterator);
-        assertTrue(paymentIterator.hasNext());
-        assertEquals(2, paymentRepository.getAllPayments().size());
+        assertEquals(2, count);
     }
 
     @Test
